@@ -40,30 +40,30 @@
     export default {
         data() {
             return {
-                user: {
+                user: { // User data inside form
                     name: "",
                     email: "",
                     password: "",
                     created_at: "",
                     last_update: ""
                 },
-                pageTitle: "Create user",
-                formErrors: {},
-                formMessages: [],
-                loading: true
+                pageTitle: "Create user", // this component using for Create / Edit / Show at the same time
+                formErrors: {}, // list of error messages
+                formMessages: [], // list of meessages like success message
+                loading: true // while loading  submit button is disabled
             }
         },
         mounted() {
-            if(this.$route.name == "admin.users.edit") {
+            if(this.$route.name == "admin.users.edit") { // is this edit user page
                 this.pageTitle = "Edit user";
                 this.load();
-            } else if(this.$route.name == "admin.users.show") {
+            } else if(this.$route.name == "admin.users.show") { // is this show user information
                 this.pageTitle = "Show user";
                 this.load();
             } else {
                 this.loading= false;
             }
-            document.title = "CRUD Example - "+this.pageTitle;
+            document.title = "CRUD Example - "+this.pageTitle; // set page title
         },
         methods: {
             load() {
@@ -79,7 +79,7 @@
             },
             submit() {
                 var self = this;
-                this.loading = true;
+                this.loading = true; // disable submit button to request more than once
                 this.formErrors = {};
                 var errorHandler = function(error){
                     if(error.response && error.response.status == 422) {
@@ -90,9 +90,9 @@
                     } else {
                         alert("OOPS... something went wrong!");
                     }
-                    self.loading = false;
+                    self.loading = false; // enable submit button to allow user to resubmit
                 };
-                if(this.$route.name == "admin.users.create") {
+                if(this.$route.name == "admin.users.create") { // is this create user page
                     axios.post("/admin/users", this.user)
                     .then(function(res){
                         self.formMessages = ["New user added successfully."];
@@ -101,7 +101,7 @@
                         }, 2000);
                     })
                     .catch(errorHandler);
-                } else if(this.$route.name == "admin.users.edit") {
+                } else if(this.$route.name == "admin.users.edit") { // is this edit user page
                     axios.put("/admin/users/"+this.$route.params.user_id, this.user)
                     .then(function(res){
                         self.formMessages = ["The user updated successfully."];

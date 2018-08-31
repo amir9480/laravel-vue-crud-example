@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if($request->ajax()) { // if request send by axios ajax then we'll return list of users
             return User::paginate(20);
         }
         return view('admin.master');
@@ -81,10 +81,10 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         $inputs = $request->only('name', 'email', 'password');
-        if(empty($inputs['password']))
+        if(empty($inputs['password'])) // when password is empty we do not need to update user's password. then we will remove it from inputs
             unset($inputs['password']);
         else
-            $inputs['password'] = bcrypt($inputs['password']);
+            $inputs['password'] = bcrypt($inputs['password']); // hash the password
         $user->fill($inputs);
         $user->save();
         return ['success' => true];

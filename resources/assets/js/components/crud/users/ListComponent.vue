@@ -40,6 +40,7 @@
                 </tbody>
             </table>
         </div>
+        <!-- صفحه بندی پایین -->
         <ul v-if="users != null" class="pagination">
             <li v-for="page in users.last_page" :class="{active : users.current_page == page}"><router-link :to="{ name:'admin.users.index', query: { page } }">{{ page }}</router-link></li>
         </ul>
@@ -50,19 +51,20 @@
     export default {
         data() {
             return {
-                users: null
+                users: null // list of users (with pagination info) . if this was null it mean list of users is on loading
             }
         },
         mounted() {
-            document.title = "CRUD Example - Users";
+            document.title = "CRUD Example - Users"; // set page title
             this.loadUsers();
         },
         watch: {
-            '$route.query'(newValue, oldValue) {
+            '$route.query'(newValue, oldValue) { // when user click's on pagination number list of users will refetch
                 this.loadUsers();
             }
         },
         methods: {
+            // load users
             loadUsers() {
                 var self = this;
                 this.users = null;
@@ -74,6 +76,7 @@
                     alert("OOPS... something went wrong!");
                 });
             },
+            // remove a user
             deleteUser(user) {
                 if(confirm("Are you sure you want delete user '"+user.name+"'?")) {
                     var self = this;

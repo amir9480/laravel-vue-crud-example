@@ -25,8 +25,8 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:191',
-            'email' => 'required|email|unique:users,email,'.optional($this->user)->id.'|max:191',
-            'password' => ($this->method()=="POST"?'required':'nullable').'|string|min:6',
+            'email' => 'required|email|unique:users,email,'.optional($this->user)->id.'|max:191',// optional($this->user)->id prevents from email dublicate error while editing an user
+            'password' => ($this->isMethod("post")?'required':'nullable').'|string|min:6', // if method was true then user is creating and password required to init user
         ];
     }
 }

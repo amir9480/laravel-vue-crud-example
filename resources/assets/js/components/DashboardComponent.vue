@@ -7,7 +7,7 @@
 <script>
     export default {
         mounted() {
-            document.title = "CRUD Example - Dashboard";
+            document.title = "CRUD Example - Dashboard"; // set page title
         }
     }
 </script>

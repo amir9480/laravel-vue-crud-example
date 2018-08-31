@@ -48862,24 +48862,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            users: null
+            users: null // list of users (with pagination info) . if this was null it mean list of users is on loading
         };
     },
     mounted: function mounted() {
-        document.title = "CRUD Example - Users";
+        document.title = "CRUD Example - Users"; // set page title
         this.loadUsers();
     },
 
     watch: {
         '$route.query': function $routeQuery(newValue, oldValue) {
+            // when user click's on pagination number list of users will refetch
             this.loadUsers();
         }
     },
     methods: {
+        // load users
         loadUsers: function loadUsers() {
             var self = this;
             this.users = null;
@@ -48889,6 +48892,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 alert("OOPS... something went wrong!");
             });
         },
+
+        // remove a user
         deleteUser: function deleteUser(user) {
             if (confirm("Are you sure you want delete user '" + user.name + "'?")) {
                 var self = this;
@@ -49379,7 +49384,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
-        document.title = "CRUD Example - Dashboard";
+        document.title = "CRUD Example - Dashboard"; // set page title
     }
 });
 
@@ -49410,6 +49415,7 @@ if (false) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// Vue routes
 /* harmony default export */ __webpack_exports__["a"] = ([{ path: '/admin', component: __webpack_require__(82), name: 'admin.dashboard' }, { path: '/admin/users', component: __webpack_require__(54), name: 'admin.users.index' }, { path: '/admin/users/create', component: __webpack_require__(86), name: 'admin.users.create' }, { path: '/admin/users/:user_id', component: __webpack_require__(86), name: 'admin.users.show', props: true }, { path: '/admin/users/:user_id/edit', component: __webpack_require__(86), name: 'admin.users.edit', props: true }]);
 
 /***/ }),
@@ -49507,30 +49513,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            user: {
+            user: { // User data inside form
                 name: "",
                 email: "",
                 password: "",
                 created_at: "",
                 last_update: ""
             },
-            pageTitle: "Create user",
-            formErrors: {},
-            formMessages: [],
-            loading: true
+            pageTitle: "Create user", // this component using for Create / Edit / Show at the same time
+            formErrors: {}, // list of error messages
+            formMessages: [], // list of meessages like success message
+            loading: true // while loading  submit button is disabled
         };
     },
     mounted: function mounted() {
         if (this.$route.name == "admin.users.edit") {
+            // is this edit user page
             this.pageTitle = "Edit user";
             this.load();
         } else if (this.$route.name == "admin.users.show") {
+            // is this show user information
             this.pageTitle = "Show user";
             this.load();
         } else {
             this.loading = false;
         }
-        document.title = "CRUD Example - " + this.pageTitle;
+        document.title = "CRUD Example - " + this.pageTitle; // set page title
     },
 
     methods: {
@@ -49545,7 +49553,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         submit: function submit() {
             var self = this;
-            this.loading = true;
+            this.loading = true; // disable submit button to request more than once
             this.formErrors = {};
             var errorHandler = function errorHandler(error) {
                 if (error.response && error.response.status == 422) {
@@ -49556,9 +49564,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 } else {
                     alert("OOPS... something went wrong!");
                 }
-                self.loading = false;
+                self.loading = false; // enable submit button to allow user to resubmit
             };
             if (this.$route.name == "admin.users.create") {
+                // is this create user page
                 axios.post("/admin/users", this.user).then(function (res) {
                     self.formMessages = ["New user added successfully."];
                     setTimeout(function () {
@@ -49566,6 +49575,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }, 2000);
                 }).catch(errorHandler);
             } else if (this.$route.name == "admin.users.edit") {
+                // is this edit user page
                 axios.put("/admin/users/" + this.$route.params.user_id, this.user).then(function (res) {
                     self.formMessages = ["The user updated successfully."];
                     setTimeout(function () {

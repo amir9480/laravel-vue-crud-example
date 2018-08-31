@@ -1,3 +1,4 @@
+// Vue routes
 export default [
     { path: '/admin', component: require("./components/DashboardComponent.vue"), name: 'admin.dashboard'},
     { path: '/admin/users', component: require("./components/crud/users/ListComponent.vue"), name: 'admin.users.index'},
